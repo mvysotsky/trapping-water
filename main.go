@@ -35,53 +35,38 @@ func assert(a, b int, err string) {
 }
 
 func estimate(levels []int) (capacity int) {
-	if len(levels) < 3 {
-		// could not store anything
+	size := len(levels)
+
+	if size < 3 {
 		return 0
 	}
 
-	for pos := 0; pos+1 < len(levels); {
-		if levels[pos+1] >= levels[pos] {
-			pos++
-			continue
+	last := size - 1
+	maxL := levels[0]
+	maxR := levels[last]
+	posL := 1
+	posR := last - 1
+
+	for posL <= posR {
+		opportunity := 0
+		if maxL <= maxR {
+			opportunity = maxL - levels[posL]
+			if levels[posL] > maxL {
+				maxL = levels[posL]
+			}
+			posL++
+		} else {
+			opportunity = maxR - levels[posR]
+			if levels[posR] > maxR {
+				maxR = levels[posR]
+			}
+			posR--
 		}
 
-		add := 0
-		pos, add = store(levels, pos)
-		capacity += add
+		if opportunity > 0 {
+			capacity += opportunity
+		}
 	}
 
 	return capacity
-}
-
-func store(levels []int, startPos int) (pos int, totalCapacity int) {
-	var currPeakPos = -1
-
-	for pos = startPos; pos+1 < len(levels); pos++ {
-		if levels[pos+1] >= levels[startPos] {
-			// area closed
-			currPeakPos = pos + 1
-			break
-		}
-
-		if levels[pos+1] > levels[pos] {
-			if currPeakPos < 0 || (levels[pos+1] > levels[currPeakPos]) {
-				currPeakPos = pos + 1
-			}
-		}
-	}
-
-	if currPeakPos < 0 {
-		return pos, 0
-	}
-
-	maxHeight := min(levels[startPos], levels[currPeakPos])
-
-	for pos = startPos; pos <= currPeakPos; pos++ {
-		if levels[pos] < maxHeight {
-			totalCapacity += maxHeight - levels[pos]
-		}
-	}
-
-	return currPeakPos, totalCapacity
 }
