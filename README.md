@@ -1,6 +1,6 @@
 # Trapping water  
 
-_This a problem from on of the coding interviews and my solution._  
+_This is a problem from one of the coding interviews and my solution._  
 ![image](https://github.com/user-attachments/assets/1b14bb59-35e8-4a05-9b9c-8469e420f5ec)  
 
 A company is looking for the best place to store its water reserves. You are a geologist who helps select the storage region.  
